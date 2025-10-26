@@ -1,0 +1,49 @@
+# InstructionSet（exec 版）
+apiVersion: risc.dev/v1alpha1
+kind: InstructionSet
+metadata: { name: demo-exec }
+spec:
+  runtime: demo
+  version: v0.1
+  instructions:
+  - name: echo
+    driver: { mode: exec }
+    execTemplate:
+      command: ["/bin/echo","Hello","{{ .Params.msg }}","{{ .SubjectID }}"]
+
+---
+# 目标 Pods（打上 app=demo 与 subject 注解）
+apiVersion: v1
+kind: Pod
+metadata:
+  name: demo-1
+  namespace: default
+  labels: { app: demo }
+  annotations: { kuberisc.io/subject-id: "sub-1" }
+spec: { containers: [{ name: pause, image: registry.k8s.io/pause:3.9 }] }
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: demo-2
+  namespace: default
+  labels: { app: demo }
+  annotations: { kuberisc.io/subject-id: "sub-2" }
+spec: { containers: [{ name: pause, image: registry.k8s.io/pause:3.9 }] }
+
+---
+# ActionRequest（扇出到 app=demo 的 Pods 所在节点）
+apiVersion: risc.dev/v1alpha1
+kind: ActionRequest
+metadata:
+  name: echo-demo
+  namespace: default
+spec:
+  instructionRef: { name: demo-exec, instruction: echo, runtime: demo }
+  params: { msg: "from-AR" }
+  selector: { podSelector: { app: demo } }
+  strategy:
+    parallelism: 3
+    retryLimit: 1
+    completionPolicy: { type: All }
+  timeoutSeconds: 10

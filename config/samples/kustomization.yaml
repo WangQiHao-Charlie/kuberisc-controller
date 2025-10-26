@@ -1,0 +1,6 @@
+## Append samples of your project ##
+resources:
+- risc_v1alpha1_nodeaction.yaml
+- risc_v1alpha1_instructionset.yaml
+- risc_v1alpha1_actionrequest.yaml
+# +kubebuilder:scaffold:manifestskustomizesamples

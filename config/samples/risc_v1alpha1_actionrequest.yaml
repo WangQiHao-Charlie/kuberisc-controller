@@ -1,0 +1,9 @@
+apiVersion: risc.dev/v1alpha1
+kind: ActionRequest
+metadata:
+  labels:
+    app.kubernetes.io/name: controller
+    app.kubernetes.io/managed-by: kustomize
+  name: actionrequest-sample
+spec:
+  # TODO(user): Add fields here
