@@ -17,22 +17,6 @@ spec:
   scope: Namespaced
   versions:
   - name: v1alpha1
-    additionalPrinterColumns:
-    - name: Phase
-      type: string
-      jsonPath: .status.phase
-    - name: Succeeded
-      type: integer
-      jsonPath: .status.counts.succeeded
-    - name: Failed
-      type: integer
-      jsonPath: .status.counts.failed
-    - name: Total
-      type: integer
-      jsonPath: .status.counts.total
-    - name: Reason
-      type: string
-      jsonPath: .status.reason
     schema:
       openAPIV3Schema:
         properties:

@@ -17,22 +17,6 @@ spec:
   scope: Namespaced
   versions:
   - name: v1alpha1
-    additionalPrinterColumns:
-    - name: Phase
-      type: string
-      jsonPath: .status.phase
-    - name: Node
-      type: string
-      jsonPath: .spec.nodeName
-    - name: Subject
-      type: string
-      jsonPath: .spec.resolvedSubjectID
-    - name: Started
-      type: date
-      jsonPath: .status.startedAt
-    - name: Finished
-      type: date
-      jsonPath: .status.finishedAt
     schema:
       openAPIV3Schema:
         properties:
