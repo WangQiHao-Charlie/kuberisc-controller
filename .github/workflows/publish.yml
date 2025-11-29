@@ -36,14 +36,21 @@ jobs:
       - name: Build and push image
         run: |
           OWNER=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
-          REPO=$(basename "${{ github.repository }}")
-          IMAGE="ghcr.io/${OWNER}/${REPO}:${{ github.sha }}"
-          echo "Pushing $IMAGE"
-          make docker-build IMG=$IMAGE
-          make docker-push IMG=$IMAGE
+          REPO=$(basename "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+          IMAGE_SHA="ghcr.io/${OWNER}/${REPO}:${{ github.sha }}"
+          echo "Pushing $IMAGE_SHA"
+
+          make docker-build IMG=$IMAGE_SHA
+          make docker-push IMG=$IMAGE_SHA
 
       - name: Tag latest
         run: |
-          IMAGE=ghcr.io/${{ github.repository_owner }}/$(basename ${{ github.repository }})
-          docker tag $IMAGE:${{ github.sha }} $IMAGE:latest
-          docker push $IMAGE:latest
+          OWNER=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+          REPO=$(basename "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+          IMAGE_SHA="ghcr.io/${OWNER}/${REPO}:${{ github.sha }}"
+          IMAGE_LATEST="ghcr.io/${OWNER}/${REPO}:latest"
+
+          echo "Tagging $IMAGE_SHA as $IMAGE_LATEST"
+
+          docker tag $IMAGE_SHA $IMAGE_LATEST
+          docker push $IMAGE_LATEST
