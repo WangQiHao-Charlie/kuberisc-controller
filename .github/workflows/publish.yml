@@ -35,7 +35,9 @@ jobs:
 
       - name: Build and push image
         run: |
-          IMAGE=ghcr.io/${{ github.repository_owner }}/$(basename ${{ github.repository }}):${{ github.sha }}
+          OWNER=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+          REPO=$(basename "${{ github.repository }}")
+          IMAGE="ghcr.io/${OWNER}/${REPO}:${{ github.sha }}"
           echo "Pushing $IMAGE"
           make docker-build IMG=$IMAGE
           make docker-push IMG=$IMAGE
